@@ -1,9 +1,6 @@
 package botCore;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
@@ -11,7 +8,7 @@ import sx.blah.discord.util.DiscordException;
 
 public class Engine {
 	public static ArrayList<Item> ItemStorage;
-	public static FileHandler FH;
+	public static FileHandler mainFileHandler;
 
 	public static IDiscordClient botClient;
 	public static EventDispatcher botClientDispatcher;
@@ -43,7 +40,7 @@ public class Engine {
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			System.out.println("This application requires arguments to run correctly, Documentation:");
-			SysoutHelper.printDocumentation();
+			StringGenHelper.printDocumentation();
 			System.exit(1);
 		} else if (args.length > 0) {
 			for (int i = 0; i < args.length; i++) {
@@ -57,20 +54,20 @@ public class Engine {
 				}
 			}
 		}
-		boolean exit = false;
-		Scanner S = new Scanner(System.in);
-		while (!exit) {
-			try {
-				Thread.sleep(1000);
-				System.out.println(LocalTime.now().format(DateTimeFormatter.ISO_TIME));
-				if (S.hasNextLine()) {
-					exit = true;
-				}
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		S.close();
+		//boolean exit = false;
+		//Scanner S = new Scanner(System.in);
+		//while (!exit) {
+		//	try {
+		//		Thread.sleep(1000);
+		//		System.out.println(LocalTime.now().format(DateTimeFormatter.ISO_TIME));
+		//		if (S.hasNextLine()) {
+		//			exit = true;
+		//		}
+		//	} catch (InterruptedException e) {
+		//		// TODO Auto-generated catch block
+		//		e.printStackTrace();
+		//	}
+		//}
+		//S.close();
 	}
 }
