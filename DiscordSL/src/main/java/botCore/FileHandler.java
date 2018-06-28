@@ -9,10 +9,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
 
 import constantStores.FileConst;
+import sx.blah.discord.handle.obj.IGuild;
 
 public class FileHandler {
 	public File mainStorageDir = variableStores.Properties.getCoreDirectory();
@@ -92,7 +94,6 @@ public class FileHandler {
 		Preferences UsrPrefs = Preferences.userRoot();
 		variableStores.Properties.setCommandPrefix(UsrPrefs.get("commandPrefix", "&"));
 		variableStores.Properties.setEntryDelimiter(UsrPrefs.get("entryDelimiter", ";"));
-		variableStores.Properties.setDelimEntrySplit(UsrPrefs.get("delimitedEntrySplitter", ","));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -127,7 +128,60 @@ public class FileHandler {
 			return null;
 		}
 	}
-
+	
+	public void exportLists() {
+		List<IGuild> guilds = Engine.botClient.getGuilds();
+		for (IGuild IG : guilds) {
+			try {
+				File f = new File(mainStorageDir.getAbsolutePath()+"//"+IG.getLongID()+".bin");
+				f.createNewFile();
+				ObjectOutputStream OOS = new ObjectOutputStream(new FileOutputStream(f));
+				OOS.writeObject(requestLists.get(IG.getLongID()));
+				OOS.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void importLists() {
+		List<IGuild> guilds = Engine.botClient.getGuilds();
+		for (IGuild IG : guilds) {
+			try {
+				File f = new File(mainStorageDir.getAbsolutePath()+"//"+IG.getLongID()+".bin");
+				if (f.exists()==true && f.isDirectory()==false) {
+					System.out.println(IG.getLongID());
+					ObjectInputStream OOS = new ObjectInputStream(new FileInputStream(f));
+					requestLists.put(IG.getLongID(), (ArrayList<String>)OOS.readObject());
+					OOS.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void importListByID(long ID) {
+		File f = new File(mainStorageDir.getAbsolutePath()+File.separatorChar+ID+".bin");
+		if (f.exists()) {
+			System.out.println(ID);
+			try {
+				ObjectInputStream OOS = new ObjectInputStream(new FileInputStream(f));
+				requestLists.put(ID, (ArrayList<String>) OOS.readObject());
+				OOS.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 	public void dumpItems() {
 		try {
 			ObjectOutputStream OOS = new ObjectOutputStream(new FileOutputStream(itemsFile));

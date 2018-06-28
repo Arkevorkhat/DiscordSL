@@ -7,6 +7,7 @@ import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.util.DiscordException;
 
 public class Engine {
+	public static final String BOT_VERSION = "1.0.0";
 	public static ArrayList<Item> ItemStorage;
 	public static FileHandler mainFileHandler;
 
@@ -53,6 +54,7 @@ public class Engine {
 					break;
 				}
 			}
+			mainFileHandler = new FileHandler();
 		}
 		//boolean exit = false;
 		//Scanner S = new Scanner(System.in);

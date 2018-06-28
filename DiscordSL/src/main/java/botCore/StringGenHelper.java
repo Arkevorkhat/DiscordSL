@@ -1,5 +1,7 @@
 package botCore;
 
+import variableStores.Properties;
+
 public class StringGenHelper {
 	public static void printDocumentation() {
 		System.out.print("Commands: \n");
@@ -11,10 +13,12 @@ public class StringGenHelper {
 	}
 	public static String formatHelpFile() {
 		StringBuilder SB = new StringBuilder();
-		SB.append("&test : Shows a test message. \n");
-		SB.append("&help : Shows this message.\n");
-		SB.append("&add  : Adds a line to the shopping list.");
-		
+		String prefix = Properties.getCommandPrefix();
+		SB.append(prefix+"test : Shows a test message. \n");
+		SB.append(prefix+"help : Shows this message.\n");
+		SB.append(prefix+"add  : Adds a line to the shopping list.\n");
+		SB.append(prefix+"pref : sets a preference, must be followed by the preference name, and then the expected value.\n");	
+		SB.append(prefix+"exit : forcefully closes the bot.");
 		return SB.toString();
 	}
 }
