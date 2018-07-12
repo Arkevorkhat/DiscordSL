@@ -1,15 +1,18 @@
 package botCore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.util.DiscordException;
 
 public class Engine {
-	public static final String BOT_VERSION = "1.0.0";
+	public static final String BOT_VERSION = "2.0.0";
 	public static ArrayList<Item> ItemStorage;
 	public static FileHandler mainFileHandler;
+	
+	public static HashMap<Long, ServerPref<String>> Servers = new HashMap<Long, ServerPref<String>>();
 
 	public static IDiscordClient botClient;
 	public static EventDispatcher botClientDispatcher;
@@ -49,12 +52,19 @@ public class Engine {
 				case "-t":
 					botClient = createClient(args[i + 1], false);
 					botClientDispatcher = botClient.getDispatcher();
-					botClientDispatcher.registerListener(new botCore.MessageListener());
+					botClientDispatcher.registerListener(new MessageListenerLambda());
+					botClientDispatcher.registerListener(new GuildCreateListener());
+					botClientDispatcher.registerListener(new ShardEventListener());
 					botClient.login();
 					break;
 				}
 			}
 			mainFileHandler = new FileHandler();
+//			for(IGuild G : botClient.getGuilds()) {
+//				ServerPref<String> s = mainFileHandler.importPrefByID(G.getLongID());
+//				Servers.put(G.getLongID(), (s!=null)?s:new ServerPref<String>((Guild)G, new ObjProperties()));
+//			}
+			mainFileHandler.importPrefs();
 		}
 		//boolean exit = false;
 		//Scanner S = new Scanner(System.in);

@@ -42,16 +42,5 @@ public class Properties {
 		Properties.coreDirectory = coreDirectory;
 	}
 
-	public static String setPrefByName(String preferenceName, String setTo) {
-		switch (preferenceName.toLowerCase()) {
-		case "commandprefix":
-			setCommandPrefix(setTo);
-			return "Preference \"commandPrefix\" successfully set to: " + setTo;
-		case "entryDelimiter":
-			setEntryDelimiter(setTo);
-			return "Preference \"entryDelimiter\" successfully set to: " + setTo;
-		default:
-			return "failed to find preference \"" + preferenceName + "\" No changes made.";
-		}
-	}
+
 }
